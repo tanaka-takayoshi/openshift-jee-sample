@@ -26,6 +26,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.util.stream.Stream;
+import java.nio.file.Files;
+import java.nio.fil.Paths;
+ // Files, Paths;
+
 /**
  * <p>
  * A simple servlet taking advantage of features added in 3.0.
@@ -52,6 +58,20 @@ public class HelloWorldServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get("/data/username"), StandardCharsets.UTF_8)) {
+            while (true) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                writer.println(line);
+            }
+        }
+        catch (IOException e) {
+            writer.println(e.ToString());
+        }
+
+
         resp.setContentType("text/html");
         PrintWriter writer = resp.getWriter();
         writer.println(PAGE_HEADER);
