@@ -28,8 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.stream.Stream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.fil.Paths;
+import java.nio.file.Paths;
+import java.io.BufferedReader;
  // Files, Paths;
 
 /**
@@ -58,6 +60,9 @@ public class HelloWorldServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        PrintWriter writer = resp.getWriter();
+
         try (BufferedReader br = Files.newBufferedReader(Paths.get("/data/username"), StandardCharsets.UTF_8)) {
             while (true) {
                 String line = br.readLine();
@@ -68,12 +73,11 @@ public class HelloWorldServlet extends HttpServlet {
             }
         }
         catch (IOException e) {
-            writer.println(e.ToString());
+            writer.println(e.toString());
         }
 
 
-        resp.setContentType("text/html");
-        PrintWriter writer = resp.getWriter();
+        
         writer.println(PAGE_HEADER);
         writer.println("<h1>" + helloService.createHelloMessage("World") + "</h1>");
         writer.println(PAGE_FOOTER);
